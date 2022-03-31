@@ -30,19 +30,23 @@ public record GameStrategy(RandomGeneratorService randomGeneratorService, BetRep
                 .user(user)
                 .bet(betEntity)
                 .build();
-        gameRepository.save(gameEntity);
-
         double balance = calculateBalance.apply(user.getBalance()) + result.winAmount();
 
-        if(balance != user.getBalance()) {
+        if(shouldUpdate(user, balance)) {
             user.setBalance(balance);
             userRepository.save(user);
         }
+        gameRepository.save(gameEntity);
+
         return balance;
     }
 
     private Game createGame() {
         return new Game(randomGeneratorService::generate, GameRules.defaultRules);
+    }
+
+    private boolean shouldUpdate(UserEntity user, double balance) {
+        return user.getBalance() != balance;
     }
 
     private UserEntity obtainUser(Long userId) {
