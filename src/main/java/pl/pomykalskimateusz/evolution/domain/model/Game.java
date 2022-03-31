@@ -1,12 +1,8 @@
-package pl.pomykalskimateusz.evolution.domain;
-
-import pl.pomykalskimateusz.evolution.domain.model.GamePlayResult;
-import pl.pomykalskimateusz.evolution.domain.model.GameResultType;
-import pl.pomykalskimateusz.evolution.domain.model.GameRules;
+package pl.pomykalskimateusz.evolution.domain.model;
 
 import java.util.function.Supplier;
 
-public record GameStrategy(
+public record Game(
         Supplier<Integer> generateRandom,
         GameRules gameRules
 ) {
