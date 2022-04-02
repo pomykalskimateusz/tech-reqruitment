@@ -18,6 +18,7 @@ public class GameEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    private String type;
     private double winAmount;
     @OneToOne(cascade = CascadeType.ALL)
     private BetEntity bet;
