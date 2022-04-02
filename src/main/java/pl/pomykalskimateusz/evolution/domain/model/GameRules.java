@@ -1,5 +1,8 @@
 package pl.pomykalskimateusz.evolution.domain.model;
 
+import pl.pomykalskimateusz.evolution.domain.exception.GameResultTypeError;
+import pl.pomykalskimateusz.evolution.domain.exception.GameWinResultTypeError;
+
 import java.util.List;
 
 public record GameRules(List<GameResultType> gameRules, List<WinResultType> winRules) {
@@ -13,7 +16,7 @@ public record GameRules(List<GameResultType> gameRules, List<WinResultType> winR
                 .stream()
                 .filter(it -> it.isInRange(value))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new GameResultTypeError(value));
     }
 
     public WinResultType obtainWinResultType(int value) {
@@ -21,6 +24,6 @@ public record GameRules(List<GameResultType> gameRules, List<WinResultType> winR
                 .stream()
                 .filter(it -> it.isInRange(value))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new GameWinResultTypeError(value));
     }
 }

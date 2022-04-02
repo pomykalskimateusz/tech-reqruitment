@@ -1,6 +1,7 @@
 package pl.pomykalskimateusz.evolution.service.game;
 
 import org.springframework.stereotype.Service;
+import pl.pomykalskimateusz.evolution.domain.exception.GameTypeNotFound;
 import pl.pomykalskimateusz.evolution.domain.model.Bet;
 import pl.pomykalskimateusz.evolution.domain.model.GameType;
 import pl.pomykalskimateusz.evolution.domain.strategy.GameStrategy;
@@ -35,6 +36,6 @@ public record GameService(Set<GameStrategy> gameStrategies,
                 .filter(it -> it.isAppropriateFor(type))
                 .findFirst()
                 .map(it -> it.processGame(userId, new Bet(betAmount)))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new GameTypeNotFound(type));
     }
 }

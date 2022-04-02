@@ -1,6 +1,8 @@
 package pl.pomykalskimateusz.evolution.domain.strategy;
 
 import org.springframework.stereotype.Service;
+import pl.pomykalskimateusz.evolution.domain.exception.InvalidBetAmountError;
+import pl.pomykalskimateusz.evolution.domain.exception.UserNotFound;
 import pl.pomykalskimateusz.evolution.domain.model.*;
 import pl.pomykalskimateusz.evolution.repository.bet.BetEntity;
 import pl.pomykalskimateusz.evolution.repository.bet.BetRepository;
@@ -17,6 +19,10 @@ public record GameStrategyLogic(RandomGeneratorService randomGeneratorService, B
                                 GameRepository gameRepository, UserRepository userRepository) {
 
     public double processGame(GameType gameType, Long userId, Bet bet, Function<Double, Double> calculateBalance) {
+        if(bet.isNotValid()) {
+            throw new InvalidBetAmountError();
+        }
+
         GamePlayResult result = createGame().play(bet.value());
 
         UserEntity user = obtainUser(userId);
@@ -47,7 +53,7 @@ public record GameStrategyLogic(RandomGeneratorService randomGeneratorService, B
     }
 
     private UserEntity obtainUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFound(userId));
     }
 
     private BetEntity buildBet(double amount) {
