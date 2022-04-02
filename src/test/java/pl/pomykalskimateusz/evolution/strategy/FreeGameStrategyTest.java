@@ -24,6 +24,8 @@ import pl.pomykalskimateusz.evolution.repository.user.UserRepository;
 import pl.pomykalskimateusz.evolution.service.RandomGeneratorService;
 import pl.pomykalskimateusz.evolution.service.user.UserService;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
@@ -40,7 +42,7 @@ public class FreeGameStrategyTest {
     private static final int X10_WIN_RESULT_PERCENT = 70;
     private static final int X50_WIN_RESULT_PERCENT = 80;
 
-    private static final double BET_AMOUNT = 5;
+    private static final BigDecimal BET_AMOUNT = BigDecimal.valueOf(5);
     private static final Bet BET = new Bet(BET_AMOUNT);
 
     @Mock
@@ -88,8 +90,8 @@ public class FreeGameStrategyTest {
         UserBalance userBalance = freeGameStrategy.processGame(new UserBet(user.getId(), BET));
         UserEntity updatedUser = userService.getUserById(user.getId());
 
-        assertEquals(userBalance.balance(), user.getBalance(), 0);
-        assertEquals(updatedUser.getBalance(), user.getBalance(), 0);
+        assertEquals(0, userBalance.balance().compareTo(user.getBalance()));
+        assertEquals(0, updatedUser.getBalance().compareTo(user.getBalance()));
     }
 
     @Test
@@ -99,8 +101,10 @@ public class FreeGameStrategyTest {
         UserBalance userBalance = freeGameStrategy.processGame(new UserBet(user.getId(), BET));
         UserEntity updatedUser = userService.getUserById(user.getId());
 
-        assertEquals(userBalance.balance(), user.getBalance() + BET_AMOUNT * 3, 0);
-        assertEquals(updatedUser.getBalance(), user.getBalance() + BET_AMOUNT * 3, 0);
+        BigDecimal modifiedUserBalance = user.getBalance().add(BET_AMOUNT.multiply(BigDecimal.valueOf(3)));
+
+        assertEquals(0, userBalance.balance().compareTo(modifiedUserBalance));
+        assertEquals(0, updatedUser.getBalance().compareTo(modifiedUserBalance));
     }
 
     @Test
@@ -110,8 +114,10 @@ public class FreeGameStrategyTest {
         UserBalance userBalance = freeGameStrategy.processGame(new UserBet(user.getId(), BET));
         UserEntity updatedUser = userService.getUserById(user.getId());
 
-        assertEquals(userBalance.balance(), user.getBalance() + BET_AMOUNT * 10, 0);
-        assertEquals(updatedUser.getBalance(), user.getBalance() + BET_AMOUNT * 10, 0);
+        BigDecimal modifiedUserBalance = user.getBalance().add(BET_AMOUNT.multiply(BigDecimal.valueOf(10)));
+
+        assertEquals(0, userBalance.balance().compareTo(modifiedUserBalance));
+        assertEquals(0, updatedUser.getBalance().compareTo(modifiedUserBalance));
     }
 
     @Test
@@ -121,7 +127,9 @@ public class FreeGameStrategyTest {
         UserBalance userBalance = freeGameStrategy.processGame(new UserBet(user.getId(), BET));
         UserEntity updatedUser = userService.getUserById(user.getId());
 
-        assertEquals(userBalance.balance(), user.getBalance() + BET_AMOUNT * 50, 0);
-        assertEquals(updatedUser.getBalance(), user.getBalance() + BET_AMOUNT * 50, 0);
+        BigDecimal modifiedUserBalance = user.getBalance().add(BET_AMOUNT.multiply(BigDecimal.valueOf(50)));
+
+        assertEquals(0, userBalance.balance().compareTo(modifiedUserBalance));
+        assertEquals(0, updatedUser.getBalance().compareTo(modifiedUserBalance));
     }
 }

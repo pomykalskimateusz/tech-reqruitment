@@ -1,11 +1,13 @@
 package pl.pomykalskimateusz.evolution.domain.model;
 
-public record UserBalance(double balance) {
-    public UserBalance add(double value) {
-        return new UserBalance(balance + value);
+import java.math.BigDecimal;
+
+public record UserBalance(BigDecimal balance) {
+    public UserBalance add(BigDecimal value) {
+        return new UserBalance(balance.add(value));
     }
 
     public boolean isEquals(UserBalance userBalance) {
-        return balance == userBalance.balance;
+        return balance.compareTo(userBalance.balance) == 0;
     }
 }

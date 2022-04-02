@@ -1,10 +1,12 @@
 package pl.pomykalskimateusz.evolution.domain.model;
 
-public record Bet(double value) {
-    public static final double MIN_VALUE = 1;
-    public static final double MAX_VALUE = 10;
+import java.math.BigDecimal;
 
-    public static boolean isNotValid(double value) {
-        return value < MIN_VALUE || value > MAX_VALUE;
+public record Bet(BigDecimal value) {
+    public static final BigDecimal MIN_VALUE = BigDecimal.ONE;
+    public static final BigDecimal MAX_VALUE = BigDecimal.TEN;
+
+    public static boolean isNotValid(BigDecimal value) {
+        return value.compareTo(MIN_VALUE) < 0 || value.compareTo(MAX_VALUE) > 0;
     }
 }

@@ -1,3 +1,5 @@
 package pl.pomykalskimateusz.evolution.api.game.play;
 
-public record PlayGameRequest(Long userId, double betAmount) {}
+import java.math.BigDecimal;
+
+public record PlayGameRequest(Long userId, BigDecimal betAmount) {}

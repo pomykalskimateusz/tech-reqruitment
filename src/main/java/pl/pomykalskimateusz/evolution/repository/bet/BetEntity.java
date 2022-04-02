@@ -5,6 +5,7 @@ import pl.pomykalskimateusz.evolution.repository.BaseEntity;
 import pl.pomykalskimateusz.evolution.repository.game.GameEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Builder
 @Getter
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity(name = "Bets")
 public class BetEntity extends BaseEntity {
-    private double amount;
+    private BigDecimal amount;
     @OneToOne
     private GameEntity game;
 }

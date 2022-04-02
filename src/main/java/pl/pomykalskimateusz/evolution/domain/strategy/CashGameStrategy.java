@@ -19,6 +19,6 @@ public record CashGameStrategy(GameStrategyLogic gameStrategyLogic) implements G
     }
 
     private UserBalance calculate(UserBalance userBalance, Bet bet) {
-        return new UserBalance(userBalance.balance() - bet.value());
+        return new UserBalance(userBalance.balance().subtract(bet.value()));
     }
 }

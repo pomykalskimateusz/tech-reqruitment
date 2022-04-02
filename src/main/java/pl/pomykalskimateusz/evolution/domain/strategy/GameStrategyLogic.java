@@ -11,6 +11,7 @@ import pl.pomykalskimateusz.evolution.repository.user.UserEntity;
 import pl.pomykalskimateusz.evolution.repository.user.UserRepository;
 import pl.pomykalskimateusz.evolution.service.RandomGeneratorService;
 
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 @Service
@@ -52,7 +53,7 @@ public record GameStrategyLogic(RandomGeneratorService randomGeneratorService, B
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFound(userId));
     }
 
-    private BetEntity buildBet(double amount) {
+    private BetEntity buildBet(BigDecimal amount) {
         return BetEntity.builder()
                 .amount(amount)
                 .build();

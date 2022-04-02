@@ -1,3 +1,5 @@
 package pl.pomykalskimateusz.evolution.domain.model;
 
-public record GamePlayResult(GameResultType resultType, double winAmount) {}
+import java.math.BigDecimal;
+
+public record GamePlayResult(GameResultType resultType, BigDecimal winAmount) {}

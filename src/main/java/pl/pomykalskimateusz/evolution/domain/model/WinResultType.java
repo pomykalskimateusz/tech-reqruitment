@@ -1,5 +1,7 @@
 package pl.pomykalskimateusz.evolution.domain.model;
 
+import java.math.BigDecimal;
+
 public enum WinResultType {
     X3(0, 50, 3),
     X10(51, 75, 10),
@@ -19,7 +21,7 @@ public enum WinResultType {
         return value >= rangeMin && value <= rangeMax;
     }
 
-    public double calculateWinAmount(double betAmount) {
-        return betAmount * factor;
+    public BigDecimal calculateWinAmount(BigDecimal betAmount) {
+        return betAmount.multiply(BigDecimal.valueOf(factor));
     }
 }

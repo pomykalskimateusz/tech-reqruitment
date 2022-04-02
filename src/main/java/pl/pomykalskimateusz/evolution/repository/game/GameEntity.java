@@ -9,6 +9,7 @@ import pl.pomykalskimateusz.evolution.repository.bet.BetEntity;
 import pl.pomykalskimateusz.evolution.repository.user.UserEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Builder
 @Getter
@@ -17,8 +18,8 @@ import javax.persistence.*;
 @Entity(name = "Games")
 public class GameEntity extends BaseEntity {
     private String type;
-    private double winAmount;
-    private double balance;
+    private BigDecimal winAmount;
+    private BigDecimal balance;
     @OneToOne(cascade = CascadeType.ALL)
     private BetEntity bet;
     @ManyToOne

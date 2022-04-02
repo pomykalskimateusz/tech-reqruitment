@@ -10,6 +10,7 @@ import pl.pomykalskimateusz.evolution.domain.strategy.GameStrategy;
 import pl.pomykalskimateusz.evolution.repository.game.GameEntity;
 import pl.pomykalskimateusz.evolution.repository.game.GameRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,23 +29,23 @@ public class GameService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public UserBalance playFreeGame(Long userId, double betAmount) {
+    public UserBalance playFreeGame(long userId, BigDecimal betAmount) {
         return processGame(userId, betAmount, GameType.FREE);
     }
 
-    public UserBalance playCashGame(Long userId, double betAmount) {
+    public UserBalance playCashGame(long userId, BigDecimal betAmount) {
         return processGame(userId, betAmount, GameType.CASH);
     }
 
-    public List<GameEntity> fetchUserGames(Long userId) {
+    public List<GameEntity> fetchUserGames(long userId) {
         return gameRepository.findAllByUserId(userId);
     }
 
-    public GameEntity fetchGame(Long gameId) {
+    public GameEntity fetchGame(long gameId) {
         return gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound(gameId));
     }
 
-    private UserBalance processGame(long userId, double betAmount, GameType type) {
+    private UserBalance processGame(long userId, BigDecimal betAmount, GameType type) {
         try {
             return gameStrategies.get(type).processGame(UserBet.of(userId, betAmount));
         } catch (NullPointerException ex) {

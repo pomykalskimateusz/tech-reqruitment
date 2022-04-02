@@ -6,6 +6,7 @@ import pl.pomykalskimateusz.evolution.repository.BaseEntity;
 import pl.pomykalskimateusz.evolution.repository.game.GameEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Builder
@@ -15,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity(name = "Users")
 public class UserEntity extends BaseEntity {
-    private double balance;
+    private BigDecimal balance;
     @OneToMany(mappedBy="user")
     private Set<GameEntity> games;
 

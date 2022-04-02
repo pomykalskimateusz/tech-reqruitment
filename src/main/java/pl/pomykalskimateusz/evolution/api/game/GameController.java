@@ -8,7 +8,6 @@ import pl.pomykalskimateusz.evolution.api.game.play.PlayGameResponse;
 import pl.pomykalskimateusz.evolution.service.game.GameService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
