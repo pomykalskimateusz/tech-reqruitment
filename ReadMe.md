@@ -32,3 +32,10 @@ PlayGameRequest consists of - { Long userId, BigDecimal betAmount }
 PlayGameResponse consists of - { BigDecimal balance }
 
 GameModel consists of - { Long id, String type, BigDecimal balance, BigDecimal winAmount, BetModel bet }
+
+### Assumptions
+
+I assume following chance to win specific bet-factor:
+* 3x - 50%
+* 10x - 25%
+* 50x - 25%
