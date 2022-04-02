@@ -44,7 +44,7 @@ public record GameStrategyLogic(RandomGeneratorService randomGeneratorService, B
     }
 
     private boolean shouldUpdate(UserEntity user, UserBalance balance) {
-        return balance.isEquals(user.getUserBalance());
+        return !balance.isEquals(user.getUserBalance());
     }
 
     private UserEntity obtainUser(Long userId) {

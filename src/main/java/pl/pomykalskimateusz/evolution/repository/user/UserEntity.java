@@ -1,24 +1,20 @@
 package pl.pomykalskimateusz.evolution.repository.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.pomykalskimateusz.evolution.domain.model.UserBalance;
+import pl.pomykalskimateusz.evolution.repository.BaseEntity;
 import pl.pomykalskimateusz.evolution.repository.game.GameEntity;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "Users")
-public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class UserEntity extends BaseEntity {
     private double balance;
     @OneToMany(mappedBy="user")
     private Set<GameEntity> games;
