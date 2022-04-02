@@ -95,7 +95,7 @@ public class CashGameStrategyTest {
     }
 
     @Test
-    public void should_not_deduct_balance_and_add_win_amount_for_winning_x3_game() {
+    public void should_deduct_balance_and_add_win_amount_for_winning_x3_game() {
         when(randomGeneratorService.generate()).thenReturn(USER_WIN_GAME_RESULT_PERCENT, X3_WIN_RESULT_PERCENT);
 
         UserBalance userBalance = cashGameStrategy.processGame(new UserBet(user.getId(), BET));
@@ -108,7 +108,7 @@ public class CashGameStrategyTest {
     }
 
     @Test
-    public void should_not_deduct_balance_and_add_win_amount_for_winning_x10_game() {
+    public void should_deduct_balance_and_add_win_amount_for_winning_x10_game() {
         when(randomGeneratorService.generate()).thenReturn(USER_WIN_GAME_RESULT_PERCENT, X10_WIN_RESULT_PERCENT);
 
         UserBalance userBalance = cashGameStrategy.processGame(new UserBet(user.getId(), BET));
@@ -121,7 +121,7 @@ public class CashGameStrategyTest {
     }
 
     @Test
-    public void should_not_deduct_balance_and_add_win_amount_for_winning_x50_game() {
+    public void should_deduct_balance_and_add_win_amount_for_winning_x50_game() {
         when(randomGeneratorService.generate()).thenReturn(USER_WIN_GAME_RESULT_PERCENT, X50_WIN_RESULT_PERCENT);
 
         UserBalance userBalance = cashGameStrategy.processGame(new UserBet(user.getId(), BET));
