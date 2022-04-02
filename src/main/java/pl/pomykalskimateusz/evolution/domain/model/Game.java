@@ -20,9 +20,13 @@ public record Game(
 
     private GamePlayResult processGameResult(GameResultType gameResult, BigDecimal betAmount) {
         return switch (gameResult) {
-            case USER_WIN -> new GamePlayResult(gameRules.obtainWinResultType(generateRandom.get()).calculateWinAmount(betAmount));
+            case USER_WIN -> new GamePlayResult(calculateWinAmount(betAmount));
             case USER_LOSS -> new GamePlayResult(BigDecimal.ZERO);
             case FREE_BET -> play(betAmount);
         };
+    }
+
+    private BigDecimal calculateWinAmount(BigDecimal betAmount) {
+        return gameRules.obtainWinResultType(generateRandom.get()).calculateWinAmount(betAmount);
     }
 }
