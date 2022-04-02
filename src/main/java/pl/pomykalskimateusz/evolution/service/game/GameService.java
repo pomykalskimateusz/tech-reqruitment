@@ -1,6 +1,7 @@
 package pl.pomykalskimateusz.evolution.service.game;
 
 import org.springframework.stereotype.Service;
+import pl.pomykalskimateusz.evolution.domain.exception.GameNotFound;
 import pl.pomykalskimateusz.evolution.domain.exception.GameTypeNotFound;
 import pl.pomykalskimateusz.evolution.domain.model.GameType;
 import pl.pomykalskimateusz.evolution.domain.model.UserBalance;
@@ -39,8 +40,8 @@ public class GameService {
         return gameRepository.findAllByUserId(userId);
     }
 
-    public Optional<GameEntity> fetchGame(Long gameId) {
-        return gameRepository.findById(gameId);
+    public GameEntity fetchGame(Long gameId) {
+        return gameRepository.findById(gameId).orElseThrow(() -> new GameNotFound(gameId));
     }
 
     private UserBalance processGame(long userId, double betAmount, GameType type) {

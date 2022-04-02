@@ -22,13 +22,14 @@ public record GameStrategyLogic(RandomGeneratorService randomGeneratorService, B
 
         UserEntity user = obtainUser(userBet.userId());
         BetEntity betEntity = buildBet(userBet.bet().value());
+        UserBalance userBalance = calculateBalance.apply(user.getUserBalance()).add(result.winAmount());
         GameEntity gameEntity = GameEntity.builder()
                 .type(gameType.getName())
                 .winAmount(result.winAmount())
                 .user(user)
+                .balance(userBalance.balance())
                 .bet(betEntity)
                 .build();
-        UserBalance userBalance = calculateBalance.apply(user.getUserBalance()).add(result.winAmount());
 
         if(shouldUpdate(user, userBalance)) {
             user.setBalance(userBalance.balance());

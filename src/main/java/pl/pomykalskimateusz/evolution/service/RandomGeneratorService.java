@@ -8,7 +8,8 @@ public class RandomGeneratorService {
     private static final int MAX_PERCENT = 100;
 
     public int generate() {
-        return generateRandomNumber(MIN_PERCENT, MAX_PERCENT);
+        int x = generateRandomNumber(MIN_PERCENT, MAX_PERCENT);
+        return x;
     }
 
     private int generateRandomNumber(int min, int max) {

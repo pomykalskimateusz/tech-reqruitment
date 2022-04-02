@@ -18,6 +18,7 @@ import javax.persistence.*;
 public class GameEntity extends BaseEntity {
     private String type;
     private double winAmount;
+    private double balance;
     @OneToOne(cascade = CascadeType.ALL)
     private BetEntity bet;
     @ManyToOne

@@ -16,7 +16,7 @@ public enum WinResultType {
     }
 
     boolean isInRange(int value) {
-        return value >= rangeMin && value < rangeMax;
+        return value >= rangeMin && value <= rangeMax;
     }
 
     public double calculateWinAmount(double betAmount) {

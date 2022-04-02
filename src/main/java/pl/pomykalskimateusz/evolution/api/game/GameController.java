@@ -25,8 +25,8 @@ public record GameController(GameService gameService) {
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Optional<FetchGameResponse> fetchGame(@PathVariable Long id) {
-        return gameService.fetchGame(id).map(FetchGameResponse::of);
+    public @ResponseBody FetchGameResponse fetchGame(@PathVariable Long id) {
+        return FetchGameResponse.of(gameService.fetchGame(id));
     }
 
     @GetMapping("/users/{id}")
