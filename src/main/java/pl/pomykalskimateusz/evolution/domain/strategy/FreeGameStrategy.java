@@ -1,22 +1,21 @@
 package pl.pomykalskimateusz.evolution.domain.strategy;
 
 import org.springframework.stereotype.Service;
-import pl.pomykalskimateusz.evolution.domain.model.Bet;
 import pl.pomykalskimateusz.evolution.domain.model.GameType;
+import pl.pomykalskimateusz.evolution.domain.model.UserBalance;
+import pl.pomykalskimateusz.evolution.domain.model.UserBet;
 
 import java.util.function.Function;
 
 @Service
 public record FreeGameStrategy(GameStrategyLogic gameStrategyLogic) implements GameStrategy {
-    private static final GameType type = GameType.FREE;
-
     @Override
-    public boolean isAppropriateFor(GameType mode) {
-        return type == mode;
+    public GameType getType() {
+        return GameType.FREE;
     }
 
     @Override
-    public double processGame(Long userId, Bet bet) {
-        return gameStrategyLogic.processGame(type, userId, bet, Function.identity());
+    public UserBalance processGame(UserBet userBet) {
+        return gameStrategyLogic.processGame(getType(), userBet, Function.identity());
     }
 }

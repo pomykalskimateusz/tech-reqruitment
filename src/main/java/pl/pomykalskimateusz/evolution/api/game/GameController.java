@@ -16,16 +16,12 @@ import java.util.stream.Collectors;
 public record GameController(GameService gameService) {
     @PostMapping("/free")
     public @ResponseBody PlayGameResponse playFreeGame(@RequestBody() PlayGameRequest request) {
-        double resultBalance = gameService.playFreeGame(request.userId(), request.betAmount());
-
-        return new PlayGameResponse(resultBalance);
+        return PlayGameResponse.of(gameService.playFreeGame(request.userId(), request.betAmount()));
     }
 
     @PostMapping("/cash")
     public @ResponseBody PlayGameResponse playCashGame(@RequestBody() PlayGameRequest request) {
-        double resultBalance = gameService.playCashGame(request.userId(), request.betAmount());
-
-        return new PlayGameResponse(resultBalance);
+        return PlayGameResponse.of(gameService.playCashGame(request.userId(), request.betAmount()));
     }
 
     @GetMapping("/{id}")

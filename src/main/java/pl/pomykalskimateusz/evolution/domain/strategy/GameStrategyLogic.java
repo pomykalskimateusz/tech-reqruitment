@@ -1,7 +1,6 @@
 package pl.pomykalskimateusz.evolution.domain.strategy;
 
 import org.springframework.stereotype.Service;
-import pl.pomykalskimateusz.evolution.domain.exception.InvalidBetAmountError;
 import pl.pomykalskimateusz.evolution.domain.exception.UserNotFound;
 import pl.pomykalskimateusz.evolution.domain.model.*;
 import pl.pomykalskimateusz.evolution.repository.bet.BetEntity;
@@ -18,38 +17,34 @@ import java.util.function.Function;
 public record GameStrategyLogic(RandomGeneratorService randomGeneratorService, BetRepository betRepository,
                                 GameRepository gameRepository, UserRepository userRepository) {
 
-    public double processGame(GameType gameType, Long userId, Bet bet, Function<Double, Double> calculateBalance) {
-        if(bet.isNotValid()) {
-            throw new InvalidBetAmountError();
-        }
+    public UserBalance processGame(GameType gameType, UserBet userBet, Function<UserBalance, UserBalance> calculateBalance) {
+        GamePlayResult result = createGame().play(userBet.bet().value());
 
-        GamePlayResult result = createGame().play(bet.value());
-
-        UserEntity user = obtainUser(userId);
-        BetEntity betEntity = buildBet(bet.value());
+        UserEntity user = obtainUser(userBet.userId());
+        BetEntity betEntity = buildBet(userBet.bet().value());
         GameEntity gameEntity = GameEntity.builder()
                 .type(gameType.getName())
                 .winAmount(result.winAmount())
                 .user(user)
                 .bet(betEntity)
                 .build();
-        double balance = calculateBalance.apply(user.getBalance()) + result.winAmount();
+        UserBalance userBalance = calculateBalance.apply(user.getUserBalance()).add(result.winAmount());
 
-        if(shouldUpdate(user, balance)) {
-            user.setBalance(balance);
+        if(shouldUpdate(user, userBalance)) {
+            user.setBalance(userBalance.balance());
             userRepository.save(user);
         }
         gameRepository.save(gameEntity);
 
-        return balance;
+        return new UserBalance(userBalance.balance());
     }
 
     private Game createGame() {
         return new Game(randomGeneratorService::generate, GameRules.defaultRules);
     }
 
-    private boolean shouldUpdate(UserEntity user, double balance) {
-        return user.getBalance() != balance;
+    private boolean shouldUpdate(UserEntity user, UserBalance balance) {
+        return balance.isEquals(user.getUserBalance());
     }
 
     private UserEntity obtainUser(Long userId) {

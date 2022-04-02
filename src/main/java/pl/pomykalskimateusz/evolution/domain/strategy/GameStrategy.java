@@ -1,10 +1,11 @@
 package pl.pomykalskimateusz.evolution.domain.strategy;
 
-import pl.pomykalskimateusz.evolution.domain.model.Bet;
 import pl.pomykalskimateusz.evolution.domain.model.GameType;
+import pl.pomykalskimateusz.evolution.domain.model.UserBalance;
+import pl.pomykalskimateusz.evolution.domain.model.UserBet;
 
 public interface GameStrategy {
-    boolean isAppropriateFor(GameType mode);
+    GameType getType();
 
-    double processGame(Long userId, Bet bet);
+    UserBalance processGame(UserBet userBet);
 }

@@ -2,24 +2,36 @@ package pl.pomykalskimateusz.evolution.service.game;
 
 import org.springframework.stereotype.Service;
 import pl.pomykalskimateusz.evolution.domain.exception.GameTypeNotFound;
-import pl.pomykalskimateusz.evolution.domain.model.Bet;
 import pl.pomykalskimateusz.evolution.domain.model.GameType;
+import pl.pomykalskimateusz.evolution.domain.model.UserBalance;
+import pl.pomykalskimateusz.evolution.domain.model.UserBet;
 import pl.pomykalskimateusz.evolution.domain.strategy.GameStrategy;
 import pl.pomykalskimateusz.evolution.repository.game.GameEntity;
 import pl.pomykalskimateusz.evolution.repository.game.GameRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-public record GameService(Set<GameStrategy> gameStrategies,
-                          GameRepository gameRepository) {
-    public double playFreeGame(Long userId, double betAmount) {
+public class GameService {
+    private final Map<GameType, GameStrategy> gameStrategies;
+    private final GameRepository gameRepository;
+
+    public GameService(Set<GameStrategy> gameStrategies, GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+        this.gameStrategies = gameStrategies.stream()
+                .map(it -> Map.entry(it.getType(), it))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public UserBalance playFreeGame(Long userId, double betAmount) {
         return processGame(userId, betAmount, GameType.FREE);
     }
 
-    public double playCashGame(Long userId, double betAmount) {
+    public UserBalance playCashGame(Long userId, double betAmount) {
         return processGame(userId, betAmount, GameType.CASH);
     }
 
@@ -31,11 +43,11 @@ public record GameService(Set<GameStrategy> gameStrategies,
         return gameRepository.findById(gameId);
     }
 
-    private double processGame(Long userId, double betAmount, GameType type) {
-        return gameStrategies.stream()
-                .filter(it -> it.isAppropriateFor(type))
-                .findFirst()
-                .map(it -> it.processGame(userId, new Bet(betAmount)))
-                .orElseThrow(() -> new GameTypeNotFound(type));
+    private UserBalance processGame(long userId, double betAmount, GameType type) {
+        try {
+            return gameStrategies.get(type).processGame(UserBet.of(userId, betAmount));
+        } catch (NullPointerException ex) {
+            throw new GameTypeNotFound(type);
+        }
     }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.pomykalskimateusz.evolution.domain.model.UserBalance;
 import pl.pomykalskimateusz.evolution.repository.game.GameEntity;
 
 import javax.persistence.*;
@@ -21,4 +22,8 @@ public class UserEntity {
     private double balance;
     @OneToMany(mappedBy="user")
     private Set<GameEntity> games;
+
+    public UserBalance getUserBalance() {
+        return new UserBalance(balance);
+    }
 }
